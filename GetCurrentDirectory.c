@@ -6,30 +6,25 @@
 #include "GetCurrentDirectory.h"
 
 //Program 5.2 - Page 150 Robbins Robbins for getting current working directory
-int main(void)
-{
-    char *getCWD(){	
-        long maxpath;
-        char *mycwdp;
 
-        if ((maxpath = pathconf(".", _PC_PATH_MAX)) == -1) {
-            perror("Failed to determine the pathname length");
-            return NULL;
-        }
+char *getCWD(){	
+    long maxpath;
+    char *mycwdp;
 
-        if ((mycwdp = (char *) malloc(maxpath)) == NULL) {
-	    perror("Failed to allocate space for pathname");
-	    return NULL;
-        }
-
-        if (getcwd(mycwdp, maxpath) == NULL) {
-	    perror("Failed to get current working directory");
-	    return NULL;
-        }
-
-        printf("Current working directory: %s\n", mycwdp);
-        return mycwdp;
+    if ((maxpath = pathconf(".", _PC_PATH_MAX)) == -1) {
+        perror("Failed to determine the pathname length");
+        return NULL;
     }
 
-    getCWD();
+    if ((mycwdp = (char *) malloc(maxpath)) == NULL) {
+        perror("Failed to allocate space for pathname");
+        return NULL;
+    }
+
+    if (getcwd(mycwdp, maxpath) == NULL) {
+        perror("Failed to get current working directory");
+        return NULL;
+    }
+
+    return mycwdp;
 }
