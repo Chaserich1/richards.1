@@ -5,11 +5,13 @@
 
 #include "GetCurrentDirectory.h"
 #include "directoryCheck.h"
+#include "CommandOptions.h"
 
-int main(void) {
+int main(int argc, char **argv) {
 
     printf("%s\n", getCWD());
 
     printf("%i\n", isdirectory(getCWD()));
 
+    displayHelpMessage();
 }
