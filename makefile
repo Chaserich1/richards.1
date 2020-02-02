@@ -3,6 +3,7 @@ CFLAGS = -I. -g
 TARGET = bt
 OBJS = main.o GetCurrentDirectory.o directoryCheck.o CommandOptions.o
 
+
 $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -o $@ $(OBJS)
 

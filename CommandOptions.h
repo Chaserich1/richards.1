@@ -12,9 +12,19 @@
 #include <stdbool.h>
 #include <ctype.h>
 
+extern int helpMessageFlg;    // -h
+extern int symbolicLinkFlg;   // -  L
+extern int fileTypeInfoFlg;   // -t
+extern int permissionFlg;     // -p
+extern int linksToFileFlg;    // -i
+extern int indentFlg;         // -I n
+extern int fileUIDFlg;        // -u
+extern int fileGIDFlg;        // -g
+extern int fileByteSizeFlg;   // -s
+extern int lastModTimeFlg;    // -d
+extern int tpiugsFlg;         // -l
+
 void flgsPassedIn(int argc, char **argv);
 void displayHelpMessage();
-
-
 
 #endif

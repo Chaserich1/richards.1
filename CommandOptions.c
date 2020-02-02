@@ -7,17 +7,17 @@
 
 
 //Initialize all flags as false until they are entered
-bool helpMessageFlg = false;    // -h
-bool symbolicLinkFlg = false;   // -L
-bool fileTypeInfoFlg = false;   // -t
-bool permissionFlg = false;     // -p
-bool linksToFileFlg = false;    // -i
-bool indentFlg = false;         // -I n
-bool fileUIDFlg = false;        // -u
-bool fileGIDFlg = false;        // -g
-bool fileByteSizeFlg = false;   // -s
-bool lastModTimeFlg = false;    // -d
-bool tpiugsFlg = false;         // -l
+int helpMessageFlg = 0;    // -h
+int symbolicLinkFlg = 0;   // -L
+int fileTypeInfoFlg = 0;   // -t
+int permissionFlg = 0;     // -p
+int linksToFileFlg = 0;    // -i
+int indentFlg = 0;         // -I n
+int fileUIDFlg = 0;        // -u
+int fileGIDFlg = 0;        // -g
+int fileByteSizeFlg = 0;   // -s
+int lastModTimeFlg = 0;    // -d
+int tpiugsFlg = 0;         // -l
 
 void flgsPassedIn(int argc, char **argv) {
 
@@ -30,7 +30,7 @@ void flgsPassedIn(int argc, char **argv) {
  
         switch(c) {
             case 'h':
-                helpMessageFlg = true;
+                helpMessageFlg = 1;
                 break;
             case 'L':
                 symbolicLinkFlg = true;
@@ -91,3 +91,18 @@ void displayHelpMessage() {
     printf("-l   : Print information for -t -p -i -u -g -s\n");
     printf("\n---------------------------------------------------------\n"); 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
