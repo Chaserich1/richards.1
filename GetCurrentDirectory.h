@@ -6,14 +6,17 @@
 #ifndef GETCURRENTDIRECTORY_H
 #define GETCURRENTDIRECTORY_H
 
+#include "directoryCheck.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stddef.h>
 #include <dirent.h>
 #include <errno.h>
+#include <string.h>
 
 char *getCWD();
-char *getFileInDir(mycwd);
+void searchFileSystem(char *path);
 
 #endif

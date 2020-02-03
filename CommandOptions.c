@@ -12,7 +12,6 @@ int symbolicLinkFlg = 0;   // -L
 int fileTypeInfoFlg = 0;   // -t
 int permissionFlg = 0;     // -p
 int linksToFileFlg = 0;    // -i
-int indentFlg = 0;         // -I n
 int fileUIDFlg = 0;        // -u
 int fileGIDFlg = 0;        // -g
 int fileByteSizeFlg = 0;   // -s
@@ -56,21 +55,14 @@ void flgsPassedIn(int argc, char **argv) {
             case 'u':
                 fileUIDFlg = true;
                 break;
-            case 'I':
-                indentFlg = true;
-                break;
             case '?':
-                if(optopt == 'I') {
-                    printf("Option -%c requires an argument (number of spaces).\n", optopt);
-                    abort();
-                }
+                printf("Please enter a valid option. User bt -h for available options");
+                abort();
                 break;
             case 'l':
                 tpiugsFlg = true, fileTypeInfoFlg = true, permissionFlg = true, linksToFileFlg = true, fileUIDFlg = true, fileGIDFlg = true, fileByteSizeFlg = true;
                 break; 
         }
-
-
     }
     
 }

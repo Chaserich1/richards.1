@@ -12,7 +12,7 @@
 
 
 struct node {
-    int item;
+    char* item;
     struct node *left, *right;
 };
 
@@ -60,20 +60,14 @@ struct node *newNode(int item) {
     return(node);
 }
 
-void traversal(char* dir, int indent) {
+int main(int argc, char* argv[]) {
 
-    struct dirent *entry;
-    struct stat fileStat;
-    struct passwd *usrInf;
-    struct group *grpInf;
-
-     
-
-}
-
-int main(int argc, char **argv) {
-
-    printf("%s\n", getCWD());
+    char* dirname = NULL;
+    
+    if(argv[1] != NULL)
+        dirname = argv[1];
+    if(dirname == NULL) 
+        dirname = ".";
 
     printf("%i\n", isdirectory(getCWD()));
     
@@ -83,9 +77,9 @@ int main(int argc, char **argv) {
         displayHelpMessage();
         return 0;
     }
-
-    getFileInDir(getCWD());
-
+    
+    searchFileSystem(dirname);
+    
     //BFS Traversal Test
     struct node *root = newNode(1);
     root-> left = newNode(2);

@@ -29,17 +29,24 @@ char *getCWD(){
     return mycwdp;
 }
 
-char *getFileInDir(mycwd) {
+void searchFileSystem(char *path) {
     struct dirent *direntp;
     DIR *dirp;
+    char fullPath[1024];
 
-    if((dirp = opendir(mycwd)) == NULL) {
-        perror("Failed to open directory");
-        return 1;
+    if(!(dirp = opendir(path)))
+        return;
+
+    while((direntp = readdir(dirp)) != NULL) {
+        if(strcmp(direntp-> d_name, ".") != 0 && strcmp(direntp-> d_name, "..") != 0) {
+            printf("%s%s\n", strcat(getCWD(), "/"), direntp-> d_name);
+            
+            strcpy(fullPath, path);
+            strcat(fullPath, "/");
+            strcat(fullPath, direntp-> d_name);
+            
+            searchFileSystem(fullPath);
+        }
     }
-
-    while((direntp = readdir(dirp)) != NULL)
-        printf("%s\n", direntp-> d_name);
-    while((closedir(dirp) == -1) && (errno == EINTR)) ;
-    return 0;
+        
 }
