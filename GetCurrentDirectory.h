@@ -10,7 +10,10 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <stddef.h>
+#include <dirent.h>
+#include <errno.h>
 
 char *getCWD();
+char *getFileInDir(mycwd);
 
 #endif

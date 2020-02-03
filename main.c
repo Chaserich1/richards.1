@@ -41,10 +41,14 @@ int height(struct node *node) {
         int leftHeight = height(node-> left);
         int rightHeight = height(node-> right);
         
-        if(leftHeight > rightHeight)
+        if(leftHeight > rightHeight) {
+            printf("\nLeft Height is: %d\n", leftHeight + 1);
             return(leftHeight + 1);
-        else
+        }
+        else {
+            printf("\nRight Height is: %d\n", rightHeight + 1);
             return(rightHeight + 1);
+        }
     }
 }
 
@@ -54,6 +58,17 @@ struct node *newNode(int item) {
     node-> left = NULL;
     node-> right = NULL;
     return(node);
+}
+
+void traversal(char* dir, int indent) {
+
+    struct dirent *entry;
+    struct stat fileStat;
+    struct passwd *usrInf;
+    struct group *grpInf;
+
+     
+
 }
 
 int main(int argc, char **argv) {
@@ -69,12 +84,15 @@ int main(int argc, char **argv) {
         return 0;
     }
 
+    getFileInDir(getCWD());
+
     //BFS Traversal Test
     struct node *root = newNode(1);
     root-> left = newNode(2);
     root-> right = newNode(3);
     root-> left-> left = newNode(4);
     root-> right-> right = newNode(5);
+    root-> left-> left-> left = newNode(6);
     
     printBFS(root);
     return 0;
