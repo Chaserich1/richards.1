@@ -15,8 +15,12 @@
 #include <dirent.h>
 #include <errno.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <pwd.h>
+#include <grp.h>
+#include <sys/types.h>
 
-char *getCWD();
-void searchFileSystem(char *path);
+char *getCWD(char *path);
+void searchFileSystem(char *basePath);
 
 #endif

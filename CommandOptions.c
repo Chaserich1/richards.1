@@ -32,35 +32,35 @@ void flgsPassedIn(int argc, char **argv) {
                 helpMessageFlg = 1;
                 break;
             case 'L':
-                symbolicLinkFlg = true;
+                symbolicLinkFlg = 1;
                 break;
             case 'd':
-                lastModTimeFlg = true;
+                lastModTimeFlg = 1;
                 break;
             case 'g':
-                fileGIDFlg = true;
+                fileGIDFlg = 1;
                 break;
             case 'i':
-                linksToFileFlg = true;
+                linksToFileFlg = 1;
                 break;
             case 'p':
-                permissionFlg = true;
+                permissionFlg = 1;
                 break;
             case 's':
-                fileByteSizeFlg = true;
+                fileByteSizeFlg = 1;
                 break;
             case 't':
-                fileTypeInfoFlg = true;
+                fileTypeInfoFlg = 1;
                 break;
             case 'u':
-                fileUIDFlg = true;
+                fileUIDFlg = 1;
                 break;
             case '?':
                 printf("Please enter a valid option. User bt -h for available options");
                 abort();
                 break;
             case 'l':
-                tpiugsFlg = true, fileTypeInfoFlg = true, permissionFlg = true, linksToFileFlg = true, fileUIDFlg = true, fileGIDFlg = true, fileByteSizeFlg = true;
+                tpiugsFlg = 1, fileTypeInfoFlg = 1, permissionFlg = 1, linksToFileFlg = 1, fileUIDFlg = 1, fileGIDFlg = 1, fileByteSizeFlg = 1;
                 break; 
         }
     }

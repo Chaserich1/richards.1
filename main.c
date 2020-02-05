@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-
+/*
 struct node {
     char* item;
     struct node *left, *right;
@@ -60,16 +60,21 @@ struct node *newNode(int item) {
     return(node);
 }
 
+*/
+
 int main(int argc, char* argv[]) {
-
+    int i;
     char* dirname = NULL;
+   
+    for(i = optind; i < argc; i++) { 
+        if(argv[i] != NULL)
+            dirname = argv[i];
+    }
     
-    if(argv[1] != NULL)
-        dirname = argv[1];
     if(dirname == NULL) 
-        dirname = ".";
+        dirname = getCWD(".");
 
-    printf("%i\n", isdirectory(getCWD()));
+    //printf("%i\n", isdirectory(getCWD(dirname)));
     
     flgsPassedIn(argc, argv);
 
@@ -80,7 +85,7 @@ int main(int argc, char* argv[]) {
     
     searchFileSystem(dirname);
     
-    //BFS Traversal Test
+    /*//BFS Traversal Test
     struct node *root = newNode(1);
     root-> left = newNode(2);
     root-> right = newNode(3);
@@ -88,6 +93,6 @@ int main(int argc, char* argv[]) {
     root-> right-> right = newNode(5);
     root-> left-> left-> left = newNode(6);
     
-    printBFS(root);
+    printBFS(root); */
     return 0;
 }
