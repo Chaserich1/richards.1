@@ -57,7 +57,6 @@ void flgsPassedIn(int argc, char **argv) {
                 break;
             case '?':
                 printf("Please enter a valid option. User bt -h for available options");
-                abort();
                 break;
             case 'l':
                 tpiugsFlg = 1, fileTypeInfoFlg = 1, permissionFlg = 1, linksToFileFlg = 1, fileUIDFlg = 1, fileGIDFlg = 1, fileByteSizeFlg = 1;

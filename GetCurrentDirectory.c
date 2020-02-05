@@ -32,12 +32,15 @@ char *getCWD(char *path){
 }
 
 void searchFileSystem(char *path) {
-    struct dirent *direntp;
-    DIR *dirp;
-    char fullPath[1000];
-    struct stat dirStats;
-    struct passwd *pwd;    
+    char fullPath[1024];
     char buffer[512];
+    DIR *dirp;
+    struct dirent *direntp;
+    struct stat typeStats;
+    struct passwd *pwd;
+    struct group *grp;    
+    
+
     if(!(dirp = opendir(path)))
         return;
 
@@ -46,10 +49,7 @@ void searchFileSystem(char *path) {
             if(strcmp(direntp-> d_name, ".") != 0 && strcmp(direntp-> d_name, "..") != 0) {
                 
                 snprintf(buffer, sizeof(buffer), "%s/%s", path, direntp-> d_name); 
-                stat(buffer, &dirStats);     
-                //printf("%s\n", strcat((path), direntp-> d_name));
-                //printf("%s/%s\n", /*strcat((path), "/")*/path, direntp-> d_name);
-                //printf("%s%s\n", path, strcat("/", direntp-> d_name));           
+                stat(buffer, &typeStats);               
         
                 strcpy(fullPath, path);
                 strcat(fullPath, "/");
@@ -58,7 +58,7 @@ void searchFileSystem(char *path) {
                 //-t
                 if(fileTypeInfoFlg) {
                     //printf("TestMessage");
-                    switch(dirStats.st_mode &S_IFMT) {
+                    switch(typeStats.st_mode &S_IFMT) {
                         case S_IFREG:
                             printf("%s", "Regular File");
                             break;
@@ -77,35 +77,39 @@ void searchFileSystem(char *path) {
             
                 //-p
                 if(permissionFlg) {
-                    printf((dirStats.st_mode & S_IRUSR) ? "r" : "-");
-                    printf((dirStats.st_mode & S_IWUSR) ? "w" : "-");
-                    printf((dirStats.st_mode & S_IXUSR) ? "x" : "-");
-                    printf((dirStats.st_mode & S_IRGRP) ? "r" : "-");
-                    printf((dirStats.st_mode & S_IWGRP) ? "w" : "-");
-                    printf((dirStats.st_mode & S_IXGRP) ? "x" : "-");
-                    printf((dirStats.st_mode & S_IROTH) ? "r" : "-");
-                    printf((dirStats.st_mode & S_IWOTH) ? "w" : "-");
-                    printf((dirStats.st_mode & S_IXOTH) ? "x" : "-");
+                    printf((typeStats.st_mode & S_IRUSR) ? "r" : "-");
+                    printf((typeStats.st_mode & S_IWUSR) ? "w" : "-");
+                    printf((typeStats.st_mode & S_IXUSR) ? "x" : "-");
+                    printf((typeStats.st_mode & S_IRGRP) ? "r" : "-");
+                    printf((typeStats.st_mode & S_IWGRP) ? "w" : "-");
+                    printf((typeStats.st_mode & S_IXGRP) ? "x" : "-");
+                    printf((typeStats.st_mode & S_IROTH) ? "r" : "-");
+                    printf((typeStats.st_mode & S_IWOTH) ? "w" : "-");
+                    printf((typeStats.st_mode & S_IXOTH) ? "x" : "-");
                     printf("\t");
                 }
                
                 //-i
                 if(linksToFileFlg) {
-                    printf("%4d", dirStats.st_nlink);
+                    printf("%4d", typeStats.st_nlink);
                 }
         
                 //-u
                 if(fileUIDFlg) {
-                    if((pwd = getpwuid(dirStats.st_uid)) != NULL)
+                    if((pwd = getpwuid(typeStats.st_uid)) != NULL)
                         printf(" %-8.8s", pwd-> pw_name);
                     else
-                        printf(" %-8d", dirStats.st_uid);
+                        printf(" %-8d", typeStats.st_uid);
                 }
             
-            
-//                snprintf(buffer, sizeof(buffer), "%s/%s", path, direntp-> d_name);
-                printf("%s/%s\n", path, direntp-> d_name);   
-//                stat(buffer, &dirStats);        
+                if(fileGIDFlg) {
+                    if((grp = getgrgid(typeStats.st_gid)) != NULL)
+                        printf(" %-8.8s", grp-> gr_name);
+                    else
+                        printf(" %-8d", typeStats.st_gid);
+                }  
+
+                printf("%s/%s\n", path, direntp-> d_name);           
                 searchFileSystem(fullPath);
             }
         }
