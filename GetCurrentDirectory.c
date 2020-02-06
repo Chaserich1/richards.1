@@ -92,22 +92,38 @@ void searchFileSystem(char *path) {
                 //-i
                 if(linksToFileFlg) {
                     printf("%4d", typeStats.st_nlink);
+                    printf("\t");
                 }
         
                 //-u
                 if(fileUIDFlg) {
                     if((pwd = getpwuid(typeStats.st_uid)) != NULL)
-                        printf(" %-8.8s", pwd-> pw_name);
+                        printf("%4s", pwd-> pw_name);
                     else
-                        printf(" %-8d", typeStats.st_uid);
+                        printf("%4d", typeStats.st_uid);
+                    printf("\t");
                 }
-            
+                
+                //-g
                 if(fileGIDFlg) {
                     if((grp = getgrgid(typeStats.st_gid)) != NULL)
-                        printf(" %-8.8s", grp-> gr_name);
+                        printf("%4s", grp-> gr_name);
                     else
-                        printf(" %-8d", typeStats.st_gid);
-                }  
+                        printf("%4d", typeStats.st_gid);
+                    printf("\t");
+                } 
+     
+                //-s
+                if(fileByteSizeFlg) {
+                    printf("%9jd", typeStats.st_size);
+                    printf("\t");
+                } 
+
+                //-d
+                if(lastModTimeFlg) {
+                    printf("%d", ctime(&typeStats.st_mtime));
+                    printf("\t");
+                }
 
                 printf("%s/%s\n", path, direntp-> d_name);           
                 searchFileSystem(fullPath);

@@ -63,26 +63,37 @@ struct node *newNode(int item) {
 */
 
 int main(int argc, char* argv[]) {
+ 
     int i;
     char* dirname = NULL;
    
+    //If there are option(s) and directory or just a directory (ex: bt -p -i testDir)
     for(i = optind; i < argc; i++) { 
         if(argv[i] != NULL)
-            dirname = argv[i];
+            dirname = argv[i];        
     }
     
-    if(dirname == NULL) 
+    //If there is nothing passed in (ex: bt)
+    if(dirname == NULL) { 
+        dirname = getCWD(".");
+    }
+
+    //Need to make sure the directory passed in is a directory (ex: bt -p)
+    if(!(isdirectory(dirname)))
         dirname = getCWD(".");
 
-    //printf("%i\n", isdirectory(getCWD(dirname)));
+    //printf("%i\n", isdirectory(argv[1]));
     
+    //Call function with getopt switch
     flgsPassedIn(argc, argv);
-
+    
+    //Print information on the options available and return
     if(helpMessageFlg) {
         displayHelpMessage();
         return 0;
     }
     
+    //Pass the directory whether specified or current default to searchFileSystem (in GetCurrentDirectory.c)
     searchFileSystem(dirname);
     
     /*//BFS Traversal Test
