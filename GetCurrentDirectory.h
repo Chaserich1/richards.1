@@ -6,7 +6,7 @@
 #ifndef GETCURRENTDIRECTORY_H
 #define GETCURRENTDIRECTORY_H
 
-#include "directoryCheck.h"
+#include "DirectoryCheck.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -19,6 +19,7 @@
 #include <pwd.h>
 #include <grp.h>
 #include <sys/types.h>
+#include <time.h>
 
 char *getCWD(char *path);
 void searchFileSystem(char *basePath);

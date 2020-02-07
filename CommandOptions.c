@@ -5,7 +5,6 @@
 
 #include "CommandOptions.h"
 
-
 //Initialize all flags as false until they are entered
 int helpMessageFlg = 0;    // -h
 int symbolicLinkFlg = 0;   // -L
@@ -20,8 +19,7 @@ int tpiugsFlg = 0;         // -l
 
 void flgsPassedIn(int argc, char **argv) {
 
-// User getopt to go through the parameter flgs that the user passes
-//   I used gnu.org Example-of-Getopt for guidance with this  
+    // Used getopt to go through the parameter flgs that the user passes  
     int c = 0;
     int opterr = 0;
 
@@ -56,8 +54,8 @@ void flgsPassedIn(int argc, char **argv) {
                 fileUIDFlg = 1;
                 break;
             case '?':
-                printf("Please enter a valid option. User bt -h for available options");
-                break;
+                printf("bt: Error: Entered an invalid option. Use bt -h for available options\n");
+                exit(1);
             case 'l':
                 tpiugsFlg = 1, fileTypeInfoFlg = 1, permissionFlg = 1, linksToFileFlg = 1, fileUIDFlg = 1, fileGIDFlg = 1, fileByteSizeFlg = 1;
                 break; 

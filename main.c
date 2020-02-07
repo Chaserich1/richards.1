@@ -4,7 +4,7 @@
    Filename: main.c  */
 
 #include "GetCurrentDirectory.h"
-#include "directoryCheck.h"
+#include "DirectoryCheck.h"
 #include "CommandOptions.h"
 
 #include <stdio.h>
@@ -79,7 +79,7 @@ int main(int argc, char* argv[]) {
     }
 
     //Need to make sure the directory passed in is a directory (ex: bt -p)
-    if(!(isdirectory(dirname)))
+    if(!(isDirectory(dirname)))
         dirname = getCWD(".");
 
     //printf("%i\n", isdirectory(argv[1]));
