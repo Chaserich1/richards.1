@@ -3,12 +3,10 @@
    Date: January 30, 2020
    Filename: main.c  */
 
-#include "GetCurrentDirectory.h"
+#include "SearchFileSystem.h"
 #include "DirectoryCheck.h"
 #include "CommandOptions.h"
-
-#include <stdio.h>
-#include <stdlib.h>
+#include "Queue.h"
 
 /*
 struct node {
@@ -94,7 +92,7 @@ int main(int argc, char* argv[]) {
     }
     
     //Pass the directory whether specified or current default to searchFileSystem (in GetCurrentDirectory.c)
-    searchFileSystem(dirname);
+    breadthFirstTraversal(dirname);
     
     /*//BFS Traversal Test
     struct node *root = newNode(1);

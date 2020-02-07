@@ -1,14 +1,14 @@
 /* Author: Chase Richards
    Project: Homework 1 CS4760
    Date: January 29, 2020
-   Filename: GetCurrentDirectory.c  */
+   Filename: SearchFileSystem.c  */
 
-#include "GetCurrentDirectory.h"
+#include "SearchFileSystem.h"
 #include "CommandOptions.h"
 #include "DirectoryCheck.h"
 #include "Queue.h"
 
-void searchFileSystem(char *path) {
+void breadthFirstTraversal(char *path) {
     char fullPath[1024];
     char buf[512];
     char qBuffer[QBUF];
@@ -135,7 +135,7 @@ void searchFileSystem(char *path) {
                 }
 
                 printf("%s/%s\n", path, direntp-> d_name);           
-                searchFileSystem(fullPath);
+                breadthFirstTraversal(fullPath);
             }
         }
     }     

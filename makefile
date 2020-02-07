@@ -1,7 +1,7 @@
 CC = gcc
 CFLAGS = -I. -g
 TARGET = bt
-OBJS = main.o GetCurrentDirectory.o DirectoryCheck.o CommandOptions.o
+OBJS = main.o SearchFileSystem.o DirectoryCheck.o CommandOptions.o Queue.o
 
 
 $(TARGET): $(OBJS)
