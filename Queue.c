@@ -36,7 +36,7 @@ void enqueue(char* path) {
     //printf("Enqueue: %s\n", queuePtr-> path);
 } 
 
-int dequeue(char *path) {
+char* dequeue(char *path) {
     struct Queue *queuePtr;
     char *tempPath;
 
@@ -56,7 +56,7 @@ int dequeue(char *path) {
     free(queuePtr);
     strcpy(path, tempPath);
     free(tempPath);
-    return 0;
+    return path;
 }
 
 

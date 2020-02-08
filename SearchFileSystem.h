@@ -19,6 +19,11 @@
 #include <sys/types.h>
 #include <time.h>
 
+struct stat typeStats;
+struct passwd *pwd;
+struct group *grp;
+
 void breadthFirstTraversal(char *basePath);
+void options(char *DirOrFile);
 
 #endif

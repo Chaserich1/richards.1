@@ -21,6 +21,6 @@ struct Queue *rear;
 
 void createQueue(void);
 void enqueue(char *path);
-int dequeue(char *path);
+char* dequeue(char *path);
 
 #endif

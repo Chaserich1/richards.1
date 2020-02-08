@@ -6,6 +6,8 @@
 #ifndef COMMANDOPTIONS_H
 #define COMMANDOPTIONS_H
 
+#include "SearchFileSystem.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
@@ -24,6 +26,7 @@ extern int lastModTimeFlg;    // -d
 extern int tpiugsFlg;         // -l
 
 void flgsPassedIn(int argc, char **argv);
+void printOptions(char *path);
 void displayHelpMessage();
 
 #endif
