@@ -145,17 +145,17 @@ void printOptions(char *path){
     //-s: Print the size of the file in bytes
     if(fileByteSizeFlg) {
 
-        long long int byte = (long long)typeStats.st_size;
+        long int byte = (long)typeStats.st_size;
         if(byte >= 1000000000) {
-            byte = (long long)(byte / 1000000000);
+            byte = (long)(byte / 1000000000);
             printf("%3dG", byte);
         }
         else if(byte >= 1000000) {
-            byte = (long long)(byte / 1000000);
+            byte = (long)(byte / 1000000);
             printf("%3dM", byte);
         }
         else if(byte >= 1000) {
-            byte = (long long)(byte / 1000);
+            byte = (long)(byte / 1000);
             printf("%3dK", byte);
         }
         else

@@ -33,10 +33,10 @@ int main(int argc, char* argv[]) {
     //Call function with getopt switch
     flgsPassedIn(argc, argv);
     
-    //Print information on the options available and return
+    //Print information on the options available and exit
     if(helpMessageFlg) {
         displayHelpMessage();
-        return 0;
+        exit(1);
     }
     
     //Pass the directory whether specified or current default to searchFileSystem (in GetCurrentDirectory.c)

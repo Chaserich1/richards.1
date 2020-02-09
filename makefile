@@ -1,14 +1,16 @@
+SHELL = /bin/sh
+
 CC = gcc
-CFLAGS = -I. -g
+CFLAGS = -g
+ALL_CFLAGS = -I. $(CFLAGS)
 TARGET = bt
 OBJS = main.o SearchFileSystem.o DirectoryCheck.o CommandOptions.o Queue.o
 
-
 $(TARGET): $(OBJS)
-	$(CC) $(CFLAGS) -o $@ $(OBJS)
+	$(CC) $(ALL_CFLAGS) -o $@ $(OBJS)
 
 .c.o:
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(ALL_CFLAGS) -c $<
 
 clean:
 	rm -f *.o $(TARGET)

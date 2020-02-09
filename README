@@ -1,14 +1,21 @@
 Author: Chase Richards
 Project: CS4760 - Homework 1
 Filename: README
-Date: January 29, 2020
+Date: February 9, 2020
 
-----------------------------------------
+-------------------------------------------------------------------
 
+How to Compile and Run (without typing "./" before the executable):
 
+$ make
+$ export PATH="$PATH:."
+$ bt [-h] [-L -d -g -i -p -s -t -u | -l] [dirname]
 
+To remove all .o and the bt executable:
 
-----------------------------------------
+$ make clean
+
+-------------------------------------------------------------------
 
 File Change Log in project directory:
 ChangeLog.txt
@@ -16,6 +23,6 @@ ChangeLog.txt
 You can also see what changed in the files at:
 https://github.com/Chaserich1/richards.1
 
-----------------------------------------
+-------------------------------------------------------------------
 
 

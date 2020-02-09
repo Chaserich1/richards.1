@@ -11,7 +11,7 @@
 void breadthFirstTraversal(char *path) {
     char buf[512];
     char *tempBuf;
-    char *next;
+    char *dqPath;
     struct dirent *direntp;
     DIR *dirp;        
 
@@ -23,10 +23,10 @@ void breadthFirstTraversal(char *path) {
 
     //While the queue is not empty
     while(!emptyQueue(queuePtr)) {  
-        //Dequeue first in and assign it to next
-        next = dequeue(queuePtr);
+        //Dequeue first in and assign it to dequeued path
+        dqPath = dequeue(queuePtr);
         //Return if the directory does not open
-        if(!(dirp = opendir(next))) {
+        if(!(dirp = opendir(dqPath))) {
             perror("bt: Error: Unable to open directory");
             return; 
         }
@@ -37,7 +37,7 @@ void breadthFirstTraversal(char *path) {
             if(strcmp(direntp-> d_name, ".") != 0 && strcmp(direntp-> d_name, "..") != 0) {              
                 /*Store the formatted (next/direntp-> d_name) c string in the buffer 
                   pointed to by buf, sizeof(buf) is the max size to fill */ 
-                snprintf(buf, sizeof(buf), "%s/%s", next, direntp-> d_name); 
+                snprintf(buf, sizeof(buf), "%s/%s", dqPath, direntp-> d_name); 
                 stat(buf, &typeStats);               
                 
                 //Pass buf to the options to determine which were specified
