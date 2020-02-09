@@ -14,9 +14,9 @@ void breadthFirstTraversal(char *path) {
     char *dqPath;
     struct dirent *direntp;
     DIR *dirp;        
-   
-    //printOptions(path);
-    //printf("%s\n", path);   
+    lstat(path, &typeStats);
+    printOptions(path);
+    printf("%s\n", path);   
 
     //Create the queue
     struct Queue *queuePtr = createQueue();
@@ -37,7 +37,7 @@ void breadthFirstTraversal(char *path) {
         //Read the files and directories in the current directory        
         while((direntp = readdir(dirp)) != NULL) {
             //Don't process current or parent
-            if(strcmp(direntp-> d_name, ".") != 0 && strcmp(direntp-> d_name, "..") != 0) {              
+            if(strcmp(direntp-> d_name, ".") != 0 && strcmp(direntp-> d_name, "..") != 0 && strcmp(direntp-> d_name, ".git") != 0) {              
                 /*Store the formatted (next/direntp-> d_name) c string in the buffer 
                   pointed to by buf, sizeof(buf) is the max size to fill */ 
                 snprintf(buf, sizeof(buf), "%s/%s", dqPath, direntp-> d_name); 
