@@ -1,6 +1,6 @@
 /* Author: Chase Richards
    Project: Homework 1 CS4760
-   Date: January 31, 2020
+   Date: January 31, 2020  
    Filename: CommandOptions.h  */
 
 #ifndef COMMANDOPTIONS_H
