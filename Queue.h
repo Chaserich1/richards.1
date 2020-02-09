@@ -13,14 +13,13 @@
 #define QBUF 256
 
 struct Queue {
-    char *path;
-    struct Queue *next;
+    char *fileOrDirectory[QBUF];
+    int head, tail;    
 };
 
-struct Queue *rear;
-
-void createQueue(void);
-void enqueue(char *path);
-char* dequeue(char *path);
+struct Queue *createQueue();
+void enqueue(struct Queue *queuePtr, char *path);
+char* dequeue(struct Queue *queuePtr);
+int emptyQueue(struct Queue *queuePtr);
 
 #endif

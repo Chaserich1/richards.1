@@ -10,17 +10,17 @@ char *getCWD(char *path){
     char *mycwdp;
 
     if ((maxpath = pathconf(".", _PC_PATH_MAX)) == -1) {
-        perror("Failed to determine the pathname length");
+        perror("bt: Error: Failed to determine the pathname length");
         return NULL;
     }
 
     if ((mycwdp = (char *) malloc(maxpath)) == NULL) {
-        perror("Failed to allocate space for pathname");
+        perror("bt: Error: Failed to allocate space for pathname");
         return NULL;
     }
 
     if (getcwd(mycwdp, maxpath) == NULL) {
-        perror("Failed to get current working directory");
+        perror("bt: Error: Failed to get current working directory");
         return NULL;
     }
    
@@ -28,11 +28,11 @@ char *getCWD(char *path){
 }
 
 int isDirectory(char *path) {
-    struct stat statbuf;
+    struct stat statBuf;
 
-    if(stat(path, &statbuf) == -1)
+    if(stat(path, &statBuf) == -1)
         return 0;
     else
-        return S_ISDIR(statbuf.st_mode);
+        return S_ISDIR(statBuf.st_mode);
 }
 

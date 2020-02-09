@@ -15,7 +15,7 @@
 #include <ctype.h>
 
 extern int helpMessageFlg;    // -h
-extern int symbolicLinkFlg;   // -  L
+extern int symbolicLinkFlg;   // -L
 extern int fileTypeInfoFlg;   // -t
 extern int permissionFlg;     // -p
 extern int linksToFileFlg;    // -i

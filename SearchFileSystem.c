@@ -9,53 +9,57 @@
 #include "Queue.h"
 
 void breadthFirstTraversal(char *path) {
-    char fullPath[1024];
     char buf[512];
-    char qBuffer[QBUF];
-    DIR *dirp;
-    struct dirent *direntp;    
-    char *next;    
+    char *tempBuf;
+    char *next;
+    struct dirent *direntp;
+    DIR *dirp;        
 
+    //Create the queue
+    struct Queue *queuePtr = createQueue();
     
-    createQueue();
+    //Enqueue the orginal directory that is passed in
+    enqueue(queuePtr, path);
 
-    enqueue(fullPath);
-      
-    next = dequeue(path);
-    
-    if(!(dirp = opendir(path)))
-        return; 
-    
-         
-    while((direntp = readdir(dirp)) != NULL) {
-        if(isDirectory(path)){
-            if(strcmp(direntp-> d_name, ".") != 0 && strcmp(direntp-> d_name, "..") != 0) {
-                
-                snprintf(buf, sizeof(buf), "%s/%s", path, direntp-> d_name); 
-                stat(buf, &typeStats);               
-        
-                strcpy(fullPath, path);
-                strcat(fullPath, "/");
-                strcat(fullPath, direntp-> d_name);
-                  
-         
-                char* str;
-                if(isDirectory(buf)) {
-                   printOptions(buf);
-                    printf("%s/%s\n", path, direntp-> d_name);
-                    str = strdup(buf);
-                    enqueue(str);
-                }
-                else {
-                    printOptions(buf);
-                    printf("%s/%s\n", path, direntp-> d_name);
-                }
-               
-                //printOptions(fullPath);
-                                                                                                                        
-                //printf("%s/%s\n", path, direntp-> d_name);           
-                breadthFirstTraversal(fullPath);
-            }
+    //While the queue is not empty
+    while(!emptyQueue(queuePtr)) {  
+        //Dequeue first in and assign it to next
+        next = dequeue(queuePtr);
+        //Return if the directory does not open
+        if(!(dirp = opendir(next))) {
+            perror("bt: Error: Unable to open directory");
+            return; 
         }
-    }     
+    
+        //Read the files and directories in the current directory        
+        while((direntp = readdir(dirp)) != NULL) {
+            
+            if(strcmp(direntp-> d_name, ".") != 0 && strcmp(direntp-> d_name, "..") != 0) {              
+                /*Store the formatted (next/direntp-> d_name) c string in the buffer 
+                  pointed to by buf, sizeof(buf) is the max size to fill */ 
+                snprintf(buf, sizeof(buf), "%s/%s", next, direntp-> d_name); 
+                stat(buf, &typeStats);               
+                
+                //Pass buf to the options to determine which were specified
+                printOptions(buf);
+                 
+                printf("%s\n", buf);
+                
+                //If buf is a directory we need to enqueue it
+                if(isDirectory(buf)) {
+                    /*tempBuf is a ptr to a newly allocated string which 
+                      is a duplicate of the string pointed to by buf  */ 
+                    tempBuf = strdup(buf);
+                    //Enqueue the tempBuf
+                    enqueue(queuePtr, tempBuf);
+                }  
+            }
+            else
+                continue;            
+        }
+    }
+
+    //Pass queuePtr and tempBuf to free to avoid memory leak
+    free(queuePtr);
+    free(tempBuf);     
 }

@@ -24,7 +24,7 @@ void flgsPassedIn(int argc, char **argv) {
     int c = 0;
     int opterr = 0;
 
-    while((c = getopt(argc, argv, "hLdgipstuI:l")) != -1) {
+    while((c = getopt(argc, argv, "hLdgipstu:l")) != -1) {
  
         switch(c) {
             case 'h':
@@ -58,7 +58,7 @@ void flgsPassedIn(int argc, char **argv) {
                 printf("bt: Error: Entered an invalid option. Use bt -h for available options\n");
                 exit(1);
             case 'l':
-                tpiugsFlg = 1, fileTypeInfoFlg = 1, permissionFlg = 1, linksToFileFlg = 1, fileUIDFlg = 1, fileGIDFlg = 1, fileByteSizeFlg = 1;
+                fileTypeInfoFlg = 1, permissionFlg = 1, linksToFileFlg = 1, fileUIDFlg = 1, fileGIDFlg = 1, fileByteSizeFlg = 1;
                 break; 
         }
     }
@@ -77,17 +77,16 @@ void displayHelpMessage() {
     printf("-s   : Print the size of file in bytes.\n");
     printf("-t   : Print information on file type.\n");
     printf("-u   : Print the UID associated with the file.\n");
-    printf("-I n : Change indentation to n spaces for each level.\n");
     printf("-l   : Print information for -t -p -i -u -g -s\n");
     printf("\n---------------------------------------------------------\n"); 
 }
 
 void printOptions(char *path){
-    //-t
+    //-t: Print information on the file type
     if(fileTypeInfoFlg){
         switch(typeStats.st_mode & S_IFMT){
             case S_IFREG:
-                printf("%12s", "RegularFile");
+                printf("%12s", "Regular File");
                 break;
             case S_IFDIR:
                 printf("%-12s", "Directory");
@@ -99,10 +98,10 @@ void printOptions(char *path){
                 printf("%12s", "Unknown");
                 break;
         }
-        printf("  ");
+        printf(" ");
     }
 
-    //-p
+    //-p: Print permission bits
     if(permissionFlg){
         printf((S_ISDIR(typeStats.st_mode)) ? "d" : "-");
         printf((typeStats.st_mode & S_IRUSR) ? "r" : "-");
@@ -114,36 +113,36 @@ void printOptions(char *path){
         printf((typeStats.st_mode & S_IROTH) ? "r" : "-");
         printf((typeStats.st_mode & S_IWOTH) ? "w" : "-");
         printf((typeStats.st_mode & S_IXOTH) ? "x" : "-");
-        printf("  ");
+        printf(" ");
     }
 
-    //-i
+    //-i: Print the number of links to file in inode table
     if(linksToFileFlg){
         printf("%3d", typeStats.st_nlink);
-        printf("  ");
+        printf(" ");
     }
 
-    //-u
+    //-u: Print the UID associated with the file
     if(fileUIDFlg){
         if((pwd = getpwuid(typeStats.st_uid)) != NULL)
             printf("%4s", pwd-> pw_name);
         else
             printf("%4d", typeStats.st_uid);
     
-        printf("  ");
+        printf(" ");
     }
 
-    //-g
+    //-g: Print the GID associated with the file
     if(fileGIDFlg){
         if((grp = getgrgid(typeStats.st_gid)) != NULL)
             printf("%4s", grp-> gr_name);
         else
             printf("%4d", typeStats.st_gid);
 
-        printf("  ");
+        printf(" ");
     }
 
-    //-s
+    //-s: Print the size of the file in bytes
     if(fileByteSizeFlg) {
 
         long long int byte = (long long)typeStats.st_size;
@@ -162,10 +161,10 @@ void printOptions(char *path){
         else
             printf("%4d", byte);
 
-        printf("  ");
+        printf(" ");
     }
 
-    //-d
+    //-d: Show the time of the last modification
     if(lastModTimeFlg){
         if(stat(path, &typeStats) == -1)
             perror("bt: Error: Unable to get file last modification time");
@@ -178,8 +177,10 @@ void printOptions(char *path){
             printf("%s",formDate);
         }
 
-        printf("  ");
+        printf(" ");
     }
+
+    //If -l is passed in then -t -p -i -u -g -s are enable
 }
 
 

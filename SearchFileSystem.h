@@ -23,7 +23,6 @@ struct stat typeStats;
 struct passwd *pwd;
 struct group *grp;
 
-void breadthFirstTraversal(char *basePath);
-void options(char *DirOrFile);
+void breadthFirstTraversal(char *path);
 
 #endif

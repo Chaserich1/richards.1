@@ -5,58 +5,39 @@
 
 #include "Queue.h"
 
-void createQueue(void) {
-    rear = NULL;
+struct Queue *createQueue() {
+    struct Queue *queuePtr = malloc(sizeof(struct Queue));
+    queuePtr-> head = -1;
+    queuePtr-> tail = -1;
+    return queuePtr;
 }
 
-void enqueue(char* path) {
-    struct Queue *queuePtr;
-    char *tempPath;
-
-    if((queuePtr = (struct Queue *)malloc(sizeof(struct Queue))) == NULL) {
-        perror("Malloc error");
-        exit(1);
+void enqueue(struct Queue *queuePtr, char *path) {
+    if(queuePtr-> tail == QBUF - 1)
+        perror("bt: Error: The queue is full");
+    else {
+        if(queuePtr-> head == -1)
+            queuePtr-> head = 0;
+        queuePtr-> tail++;
+        queuePtr-> fileOrDirectory[queuePtr-> tail] = path;
     }
-    if((tempPath = (char *)malloc(strlen(path) + 1)) == NULL) {
-        perror("Malloc error");
-        exit(1);
-    }
-
-    strcpy(tempPath, path);
-    queuePtr-> path = tempPath;
-
-    if(rear == NULL) { 
-        queuePtr-> next = queuePtr;
-    } else {
-        queuePtr-> next = rear-> next;
-        rear-> next = queuePtr;
-    }
- 
-    rear = queuePtr;
-    //printf("Enqueue: %s\n", queuePtr-> path);
 } 
 
-char* dequeue(char *path) {
-    struct Queue *queuePtr;
-    char *tempPath;
+char* dequeue(struct Queue *queuePtr) {
+    char *path;
 
-    if(!rear) {
-        perror("bt: Error: Empty Queue");
-        exit(1);
-    }
-
-    queuePtr = rear-> next;
-    tempPath = queuePtr-> path;
-
-    if(queuePtr == rear)
-        rear = NULL;
-    else
-        rear-> next = queuePtr-> next;
-    //printf("Dequeued: %s\n", queuePtr-> path);
-    free(queuePtr);
-    strcpy(path, tempPath);
-    free(tempPath);
+    path = queuePtr-> fileOrDirectory[queuePtr-> head];
+    queuePtr-> head++;
+    if(queuePtr-> head > queuePtr-> tail) 
+        queuePtr-> head = queuePtr-> tail = -1;
+    
     return path;
 }
 
+int emptyQueue(struct Queue *queuePtr) {
+    if(queuePtr-> tail == -1)
+        return 1;
+    else
+        return 0;
+}
 
