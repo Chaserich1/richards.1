@@ -9,11 +9,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdbool.h>
 
 #define QBUF 256
 
 struct Queue {
-    char *fileOrDirectory[QBUF];
+    char *directory[QBUF];
     int head, tail;    
 };
 

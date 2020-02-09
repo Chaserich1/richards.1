@@ -55,7 +55,7 @@ void flgsPassedIn(int argc, char **argv) {
                 fileUIDFlg = 1;
                 break;
             case '?':
-                printf("bt: Error: Entered an invalid option. Use bt -h for available options\n");
+                printf("Use -h to see the available options.\n");
                 exit(1);
             case 'l':
                 fileTypeInfoFlg = 1, permissionFlg = 1, linksToFileFlg = 1, fileUIDFlg = 1, fileGIDFlg = 1, fileByteSizeFlg = 1;
@@ -82,20 +82,41 @@ void displayHelpMessage() {
 }
 
 void printOptions(char *path){
+    
+    //Follow the symbolic links if it is a sym linki
+    if(symbolicLinkFlg) {
+    if((typeStats.st_mode & S_IFMT) == S_IFLNK) {
+        char tempPath[256];
+        const char* linkPath = path;
+        //Read the value of the symbolic link
+        int symValue = readlink(linkPath, tempPath, sizeof(tempPath));
+        if(symValue == -1)
+            perror("bt: Error: Failed to read link");
+        else {
+            //Null terminate the file that the link leads to
+            tempPath[symValue] = '\0';
+            printf("%-9s", tempPath);
+        }
+        printf(" ");
+    } 
+    else 
+        printf("          ");    
+    }
+   
     //-t: Print information on the file type
     if(fileTypeInfoFlg){
         switch(typeStats.st_mode & S_IFMT){
             case S_IFREG:
-                printf("%12s", "Regular File");
+                printf("%-12s", "RegularFile");
                 break;
             case S_IFDIR:
                 printf("%-12s", "Directory");
                 break;
             case S_IFLNK:
-                printf("%12s", "SymLink");
+                printf("%-12s", "SymbolicLink");
                 break;
             default:
-                printf("%12s", "Unknown");
+                printf("%-12s", "Unknown");
                 break;
         }
         printf(" ");
@@ -125,9 +146,9 @@ void printOptions(char *path){
     //-u: Print the UID associated with the file
     if(fileUIDFlg){
         if((pwd = getpwuid(typeStats.st_uid)) != NULL)
-            printf("%4s", pwd-> pw_name);
+            printf("%8s", pwd-> pw_name);
         else
-            printf("%4d", typeStats.st_uid);
+            printf("%8d", typeStats.st_uid);
     
         printf(" ");
     }
@@ -135,9 +156,9 @@ void printOptions(char *path){
     //-g: Print the GID associated with the file
     if(fileGIDFlg){
         if((grp = getgrgid(typeStats.st_gid)) != NULL)
-            printf("%4s", grp-> gr_name);
+            printf("%8s", grp-> gr_name);
         else
-            printf("%4d", typeStats.st_gid);
+            printf("%8d", typeStats.st_gid);
 
         printf(" ");
     }
@@ -169,12 +190,13 @@ void printOptions(char *path){
         if(stat(path, &typeStats) == -1)
             perror("bt: Error: Unable to get file last modification time");
         else {
-            char formDate[100];
-            time_t t = typeStats.st_mtime;
-            struct tm lt;
-            localtime_r(&t, &lt);
-            strftime(formDate, sizeof(formDate),"%b %e, %Y", &lt);
-            printf("%s",formDate);
+            char formDate[16];
+            time_t time = typeStats.st_mtime;
+            struct tm lastModTime;
+            localtime_r(&time, &lastModTime);
+            //Format the date to be Month(3) day, year and print it
+            strftime(formDate, sizeof(formDate),"%b %e, %Y", &lastModTime);
+            printf("%s", formDate);
         }
 
         printf(" ");
