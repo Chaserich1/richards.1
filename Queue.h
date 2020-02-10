@@ -13,7 +13,8 @@
 
 #define QBUF 256
 
-struct Queue {
+struct Queue 
+{
     char *directory[QBUF];
     int head, tail;    
 };

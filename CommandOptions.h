@@ -26,7 +26,7 @@ extern int lastModTimeFlg;    // -d
 extern int tpiugsFlg;         // -l
 
 void flgsPassedIn(int argc, char **argv);
-void printOptions(char *path);
+void printOptions(char *path, char **argv);
 void displayHelpMessage();
 
 #endif

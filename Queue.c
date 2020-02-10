@@ -6,7 +6,8 @@
 #include "Queue.h"
 
 //Create the queue and dymically allocate size
-struct Queue *createQueue() {
+struct Queue *createQueue() 
+{
     struct Queue *queuePtr = malloc(sizeof(struct Queue));
     queuePtr-> head = -1; 
     queuePtr-> tail = -1;
@@ -14,11 +15,13 @@ struct Queue *createQueue() {
 }
 
 //Enqueue function to add a directory to the queue
-void enqueue(struct Queue *queuePtr, char *path) {
+void enqueue(struct Queue *queuePtr, char *path) 
+{
     //If the tail is 255 then the queue is full
     if(queuePtr-> tail == QBUF - 1)
         perror("bt: Error: The queue is full");
-    else {
+    else 
+    {
         //For the first directory passed in
         if(queuePtr-> head == -1)
             queuePtr-> head = 0;
@@ -28,7 +31,8 @@ void enqueue(struct Queue *queuePtr, char *path) {
 } 
 
 //Dequeue function to pull the first in, first out
-char* dequeue(struct Queue *queuePtr) {
+char* dequeue(struct Queue *queuePtr) 
+{
     char *tempPtr;
     //If tail is -1 then return null
     if(!(queuePtr-> tail))
@@ -45,7 +49,8 @@ char* dequeue(struct Queue *queuePtr) {
 }
 
 //Return true if the queue is empty, otherwise false
-int emptyQueue(struct Queue *queuePtr) {
+int emptyQueue(struct Queue *queuePtr) 
+{
     if(queuePtr-> tail == -1)
         return true;
     else

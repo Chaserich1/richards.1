@@ -5,22 +5,29 @@
 
 #include "DirectoryCheck.h"
 
-char *getCWD(char *path){	
+char *getCWD(char *path, char **argv)
+{	
     long maxpath;
     char *mycwdp;
     //Find the maximum pathname length
-    if ((maxpath = pathconf(".", _PC_PATH_MAX)) == -1) {
-        perror("bt: Error: Failed to determine the pathname length");
+    if ((maxpath = pathconf(".", _PC_PATH_MAX)) == -1) 
+    {
+        fprintf(stderr, "%s: Error: Failed to determine the length of the path", argv[0]);
+        perror("");
         return NULL;
     }
     //Allocate space for the pathname dynamically
-    if ((mycwdp = (char *) malloc(maxpath)) == NULL) {
-        perror("bt: Error: Failed to allocate space for pathname");
+    if ((mycwdp = (char *) malloc(maxpath)) == NULL) 
+    {
+        fprintf(stderr, "%s: Error: Failed to allocate the space for the pathname", argv[0]);
+        perror("");
         return NULL;
     }
     //If it fails, return NULL
-    if (getcwd(mycwdp, maxpath) == NULL) {
-        perror("bt: Error: Failed to get current working directory");
+    if (getcwd(mycwdp, maxpath) == NULL) 
+    {
+        fprintf(stderr, "%s: Error: Failed to get the current working directory", argv[0]);
+        perror("");
         return NULL;
     }
     //Return the current working directory
@@ -28,7 +35,8 @@ char *getCWD(char *path){
 }
 
 //Pass the path to determine if it's a directory
-int isDirectory(char *path) {
+int isDirectory(char *path) 
+{
     struct stat statBuf;
     //Return 0 if not a directory
     if(stat(path, &statBuf) == -1)

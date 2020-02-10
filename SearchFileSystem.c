@@ -8,14 +8,17 @@
 #include "DirectoryCheck.h"
 #include "Queue.h"
 
-void breadthFirstTraversal(char *path) {
+void breadthFirstTraversal(char *path, char **argv) 
+{
     char buf[512];
     char *tempBuf;
     char *dqPath;
     struct dirent *direntp;
-    DIR *dirp;        
+    DIR *dirp;       
+
+    //This makes sure the directory and stats for the one passed in is included in output
     lstat(path, &typeStats);
-    printOptions(path);
+    printOptions(path, argv);
     printf("%s\n", path);   
 
     //Create the queue
@@ -25,32 +28,37 @@ void breadthFirstTraversal(char *path) {
     enqueue(queuePtr, path);
 
     //While the queue is not empty
-    while(!emptyQueue(queuePtr)) {  
+    while(!emptyQueue(queuePtr)) 
+    {  
         //Dequeue first in and assign it to dequeued path
         dqPath = dequeue(queuePtr);
         //Return if the directory does not open
-        if(!(dirp = opendir(dqPath))) {
+        if(!(dirp = opendir(dqPath))) 
+        {
             perror("bt: Error: Unable to open directory");
             return; 
         }
     
         //Read the files and directories in the current directory        
-        while((direntp = readdir(dirp)) != NULL) {
+        while((direntp = readdir(dirp)) != NULL) 
+        {
             //Don't process current or parent
-            if(strcmp(direntp-> d_name, ".") != 0 && strcmp(direntp-> d_name, "..") != 0 && strcmp(direntp-> d_name, ".git") != 0) {              
+            if(strcmp(direntp-> d_name, ".") != 0 && strcmp(direntp-> d_name, "..") != 0 && strcmp(direntp-> d_name, ".git") != 0) 
+            {              
                 /*Store the formatted (next/direntp-> d_name) c string in the buffer 
                   pointed to by buf, sizeof(buf) is the max size to fill */ 
                 snprintf(buf, sizeof(buf), "%s/%s", dqPath, direntp-> d_name); 
                 lstat(buf, &typeStats);               
                 
                 //Pass buf to the options to determine which were specified
-                printOptions(buf);
+                printOptions(buf, argv);
                 
                 //Print the path
                 printf("%s\n", buf);
                 
                 //If buf is a directory we need to enqueue it
-                if(isDirectory(buf)) {
+                if(isDirectory(buf)) 
+                {
                     /*tempBuf is a ptr to a newly allocated string which 
                       is a duplicate of the string pointed to by buf  */ 
                     tempBuf = strdup(buf);
@@ -63,7 +71,6 @@ void breadthFirstTraversal(char *path) {
         }
     }
 
-    //Pass queuePtr and tempBuf to free to avoid memory leak
-    free(queuePtr);
-    free(tempBuf);     
+    //Pass queuePtr to free to avoid memory leak
+    free(queuePtr);     
 }

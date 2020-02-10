@@ -12,7 +12,7 @@
 #include <time.h>
 #include <sys/stat.h>
 
-char *getCWD(char *path);
+char *getCWD(char *path, char **argv);
 int isDirectory(char* path);
 
 #endif

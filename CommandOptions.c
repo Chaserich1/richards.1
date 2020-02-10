@@ -24,9 +24,10 @@ void flgsPassedIn(int argc, char **argv) {
     int c = 0;
     int opterr = 0;
 
-    while((c = getopt(argc, argv, "hLdgipstu:l")) != -1) {
- 
-        switch(c) {
+    while((c = getopt(argc, argv, "hLdgipstu:l")) != -1) 
+    {
+        switch(c) 
+        {
             case 'h':
                 helpMessageFlg = 1;
                 break;
@@ -55,7 +56,8 @@ void flgsPassedIn(int argc, char **argv) {
                 fileUIDFlg = 1;
                 break;
             case '?':
-                printf("Use -h to see the available options.\n");
+                fprintf(stderr, "%s: Error: Invalid option, use -h to see the available options.\n", argv[0]);
+                perror("");
                 exit(1);
             case 'l':
                 fileTypeInfoFlg = 1, permissionFlg = 1, linksToFileFlg = 1, fileUIDFlg = 1, fileGIDFlg = 1, fileByteSizeFlg = 1;
@@ -65,7 +67,8 @@ void flgsPassedIn(int argc, char **argv) {
     
 }
 
-void displayHelpMessage() {
+void displayHelpMessage() 
+{
     printf("\n---------------------------------------------------------\n");
     printf("See below for the options:\n\n");
     printf("-h   : Print help message.\n");
@@ -81,18 +84,24 @@ void displayHelpMessage() {
     printf("\n---------------------------------------------------------\n"); 
 }
 
-void printOptions(char *path){
+void printOptions(char *path, char **argv)
+{
     
     //Follow the symbolic links if it is a sym linki
     if(symbolicLinkFlg) {
-    if((typeStats.st_mode & S_IFMT) == S_IFLNK) {
+    if((typeStats.st_mode & S_IFMT) == S_IFLNK) 
+    {
         char tempPath[256];
-        const char* linkPath = path;
+        char* linkPath = path;
         //Read the value of the symbolic link
         int symValue = readlink(linkPath, tempPath, sizeof(tempPath));
         if(symValue == -1)
-            perror("bt: Error: Failed to read link");
-        else {
+        {        
+            fprintf(stderr, "%s: Error: Failed to read link", argv[0]);
+            perror("");
+        }
+        else 
+        {
             //Null terminate the file that the link leads to
             tempPath[symValue] = '\0';
             printf("%-9s", tempPath);
@@ -104,8 +113,10 @@ void printOptions(char *path){
     }
    
     //-t: Print information on the file type
-    if(fileTypeInfoFlg){
-        switch(typeStats.st_mode & S_IFMT){
+    if(fileTypeInfoFlg)
+    {
+        switch(typeStats.st_mode & S_IFMT)
+        {
             case S_IFREG:
                 printf("%-12s", "RegularFile");
                 break;
@@ -123,7 +134,8 @@ void printOptions(char *path){
     }
 
     //-p: Print permission bits
-    if(permissionFlg){
+    if(permissionFlg)
+    {
         printf((S_ISDIR(typeStats.st_mode)) ? "d" : "-");
         printf((typeStats.st_mode & S_IRUSR) ? "r" : "-");
         printf((typeStats.st_mode & S_IWUSR) ? "w" : "-");
@@ -138,13 +150,15 @@ void printOptions(char *path){
     }
 
     //-i: Print the number of links to file in inode table
-    if(linksToFileFlg){
+    if(linksToFileFlg)
+    {
         printf("%3d", typeStats.st_nlink);
         printf(" ");
     }
 
     //-u: Print the UID associated with the file
-    if(fileUIDFlg){
+    if(fileUIDFlg)
+    {
         if((pwd = getpwuid(typeStats.st_uid)) != NULL)
             printf("%8s", pwd-> pw_name);
         else
@@ -154,7 +168,8 @@ void printOptions(char *path){
     }
 
     //-g: Print the GID associated with the file
-    if(fileGIDFlg){
+    if(fileGIDFlg)
+    {
         if((grp = getgrgid(typeStats.st_gid)) != NULL)
             printf("%8s", grp-> gr_name);
         else
@@ -164,18 +179,22 @@ void printOptions(char *path){
     }
 
     //-s: Print the size of the file in bytes
-    if(fileByteSizeFlg) {
+    if(fileByteSizeFlg) 
+    {
 
         long int byte = (long)typeStats.st_size;
-        if(byte >= 1000000000) {
+        if(byte >= 1000000000) 
+        {
             byte = (long)(byte / 1000000000);
             printf("%3dG", byte);
         }
-        else if(byte >= 1000000) {
+        else if(byte >= 1000000) 
+        {
             byte = (long)(byte / 1000000);
             printf("%3dM", byte);
         }
-        else if(byte >= 1000) {
+        else if(byte >= 1000) 
+        {
             byte = (long)(byte / 1000);
             printf("%3dK", byte);
         }
@@ -186,10 +205,15 @@ void printOptions(char *path){
     }
 
     //-d: Show the time of the last modification
-    if(lastModTimeFlg){
+    if(lastModTimeFlg)
+    {
         if(stat(path, &typeStats) == -1)
-            perror("bt: Error: Unable to get file last modification time");
-        else {
+        {
+            fprintf(stderr, "%s: Error: Unable to get file last modification time", argv[0]);
+            perror("");
+        }
+        else 
+        {
             char formDate[16];
             time_t time = typeStats.st_mtime;
             struct tm lastModTime;
@@ -204,16 +228,3 @@ void printOptions(char *path){
 
     //If -l is passed in then -t -p -i -u -g -s are enable
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

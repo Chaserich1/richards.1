@@ -23,6 +23,6 @@ struct stat typeStats;
 struct passwd *pwd;
 struct group *grp;
 
-void breadthFirstTraversal(char *path);
+void breadthFirstTraversal(char *path, char **argv);
 
 #endif
