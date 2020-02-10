@@ -3,7 +3,7 @@ Project: CS4760 - Homework 1
 Filename: README  
 Date: February 9, 2020
 
--------------------------------------------------------------------
+-------------------------------------------------------------------------------
 
 How to Compile and Run (without typing "./" before the executable):
 
@@ -15,7 +15,7 @@ To remove all .o and the bt executable:
 
 $ make clean
 
--------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
 File Change Log in project directory:
 ChangeLog.txt
@@ -23,6 +23,14 @@ ChangeLog.txt
 You can also see what changed in the files at:
 https://github.com/Chaserich1/richards.1
 
--------------------------------------------------------------------
+--------------------------------------------------------------------------------
 
+Additional Project Information:
+
+1. In SearchFileSystem.c I added code to ignore the .git files because they
+   were printing lots of additional files and directories when there was no
+   directory specified. It works with the .git files but excluding those makes it much
+   easier to see that the Breadth-First Traversal is working correctly.
+
+-------------------------------------------------------------------------------
 
