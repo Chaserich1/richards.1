@@ -24,7 +24,7 @@ void flgsPassedIn(int argc, char **argv) {
     int c = 0;
     int opterr = 0;
 
-    while((c = getopt(argc, argv, "hLdgipstu:l")) != -1) 
+    while((c = getopt(argc, argv, "hLdgipstul")) != -1) 
     {
         switch(c) 
         {
@@ -85,33 +85,7 @@ void displayHelpMessage()
 }
 
 void printOptions(char *path, char **argv)
-{
-    
-    //Follow the symbolic links if it is a sym linki
-    if(symbolicLinkFlg) {
-    if((typeStats.st_mode & S_IFMT) == S_IFLNK) 
-    {
-        char tempPath[256];
-        char* linkPath = path;
-        //Read the value of the symbolic link
-        int symValue = readlink(linkPath, tempPath, sizeof(tempPath));
-        if(symValue == -1)
-        {        
-            fprintf(stderr, "%s: Error: Failed to read link", argv[0]);
-            perror("");
-        }
-        else 
-        {
-            //Null terminate the file that the link leads to
-            tempPath[symValue] = '\0';
-            printf("%-9s", tempPath);
-        }
-        printf(" ");
-    } 
-    else 
-        printf("          ");    
-    }
-   
+{  
     //-t: Print information on the file type
     if(fileTypeInfoFlg)
     {
@@ -126,6 +100,18 @@ void printOptions(char *path, char **argv)
             case S_IFLNK:
                 printf("%-12s", "SymbolicLink");
                 break;
+            case S_IFCHR:
+                printf("%12s", "CharSpecFile");
+                break;
+            case S_IFBLK:
+                printf("%12s", "BlckSpecFile");
+                break;
+            case S_IFIFO:
+                printf("%-12s", "PipeOrFIFO");
+                break;
+            case S_IFSOCK:
+                printf("%-12s", "Socket");
+                break;
             default:
                 printf("%-12s", "Unknown");
                 break;
@@ -136,7 +122,19 @@ void printOptions(char *path, char **argv)
     //-p: Print permission bits
     if(permissionFlg)
     {
-        printf((S_ISDIR(typeStats.st_mode)) ? "d" : "-");
+        if(S_ISLNK(typeStats.st_mode)) 
+        {
+            printf("l");
+        }
+        else if(S_ISDIR(typeStats.st_mode))
+        {
+            printf("d");
+        }
+        else
+        {
+            printf("-");
+        }
+        
         printf((typeStats.st_mode & S_IRUSR) ? "r" : "-");
         printf((typeStats.st_mode & S_IWUSR) ? "w" : "-");
         printf((typeStats.st_mode & S_IXUSR) ? "x" : "-");
@@ -183,23 +181,23 @@ void printOptions(char *path, char **argv)
     {
 
         long int byte = (long)typeStats.st_size;
-        if(byte >= 1000000000) 
+        if(byte >= 1073741824) 
         {
-            byte = (long)(byte / 1000000000);
-            printf("%3dG", byte);
+            byte = (long)(byte / 1073741824);
+            printf("%4dG", byte);
         }
-        else if(byte >= 1000000) 
+        else if(byte >= 1048576) 
         {
-            byte = (long)(byte / 1000000);
-            printf("%3dM", byte);
+            byte = (long)(byte / 1048576);
+            printf("%4dM", byte);
         }
-        else if(byte >= 1000) 
+        else if(byte >= 1024) 
         {
-            byte = (long)(byte / 1000);
-            printf("%3dK", byte);
+            byte = (long)(byte / 1024);
+            printf("%4dK", byte);
         }
         else
-            printf("%4d", byte);
+            printf("%5d", byte);
 
         printf(" ");
     }
@@ -227,4 +225,5 @@ void printOptions(char *path, char **argv)
     }
 
     //If -l is passed in then -t -p -i -u -g -s are enable
+    //-L is handled in SearchFileSystem.c
 }
