@@ -8,7 +8,9 @@
 //Create the queue and dymically allocate size
 struct Queue *createQueue() 
 {
+    //Allocate the size
     struct Queue *queuePtr = malloc(sizeof(struct Queue));
+    //Initialize the head and tail
     queuePtr-> head = -1; 
     queuePtr-> tail = -1;
     return queuePtr; //Return the queue ptr
@@ -25,6 +27,7 @@ void enqueue(struct Queue *queuePtr, char *path)
         //For the first directory passed in
         if(queuePtr-> head == -1)
             queuePtr-> head = 0;
+        //Increment the tail when a new directory comes in
         queuePtr-> tail++;
         queuePtr-> directory[queuePtr-> tail] = path;
     }
