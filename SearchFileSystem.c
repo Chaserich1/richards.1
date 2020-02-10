@@ -16,13 +16,13 @@ void breadthFirstTraversal(char *path, char **argv)
     struct dirent *direntp;
     DIR *dirp;       
 
+    //Create the queue
+    struct Queue *queuePtr = createQueue();
+
     //This makes sure the directory and stats for the one passed in is included in output
     lstat(path, &typeStats);
     printOptions(path, argv);
-    printf("%s\n", path);   
-
-    //Create the queue
-    struct Queue *queuePtr = createQueue();
+    printf("%s\n", path); 
     
     //Enqueue the orginal directory that is passed in
     enqueue(queuePtr, path);
@@ -48,22 +48,48 @@ void breadthFirstTraversal(char *path, char **argv)
                 /*Store the formatted (next/direntp-> d_name) c string in the buffer 
                   pointed to by buf, sizeof(buf) is the max size to fill */ 
                 snprintf(buf, sizeof(buf), "%s/%s", dqPath, direntp-> d_name); 
-                lstat(buf, &typeStats);               
-                
-                //Pass buf to the options to determine which were specified
-                printOptions(buf, argv);
-                
-                //Print the path
-                printf("%s\n", buf);
-                
-                //If buf is a directory we need to enqueue it
-                if(isDirectory(buf)) 
+                lstat(buf, &typeStats);                               
+ 
+                //If -L is specified and it is a symbolic link
+                if((symbolicLinkFlg) && (typeStats.st_mode & S_IFMT) == S_IFLNK) 
                 {
-                    /*tempBuf is a ptr to a newly allocated string which 
-                      is a duplicate of the string pointed to by buf  */ 
-                    tempBuf = strdup(buf);
-                    //Enqueue the tempBuf
-                    enqueue(queuePtr, tempBuf);
+                    char tempPath[256];
+                    char* linkPath = buf;
+                    //Read the value of the symbolic link
+                    int symValue = readlink(linkPath, tempPath, sizeof(tempPath));
+                    if(symValue == -1)
+                    {
+                        fprintf(stderr, "%s: Error: Failed to read symbolic link", argv[0]);
+                        perror("");
+                    }
+                    else
+                    {
+                        //Null terminate the file that the link leads to
+                        tempPath[symValue] = '\0';
+                        //Check the options passed in
+                        printOptions(buf, argv);
+                        //Print the path followed by -> symlinkfile/dir
+                        printf("%s", buf);
+                        printf(" -> %s\n", tempPath);
+                    }
+                } 
+                //If it is not a symbolic link or -L is not passed in
+                else
+                {
+                    //Pass buf to the options to see which were specified
+                    printOptions(buf, argv);
+                    //Print the path to the dir, file, symlink, etc
+                    printf("%s\n", buf);
+
+                    //If buf is a directory we need to enqueue it
+                    if(isDirectory(buf)) 
+                    {
+                        /*tempBuf is a ptr to a newly allocated string which 
+                          is a duplicate of the string pointed to by buf  */ 
+                        tempBuf = strdup(buf);
+                        //Enqueue the tempBuf
+                        enqueue(queuePtr, tempBuf);
+                    }   
                 }  
             }
             else
