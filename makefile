@@ -14,3 +14,4 @@ $(TARGET): $(OBJS)
 
 clean:
 	rm -f *.o $(TARGET)
+	find . -maxdepth 1 -type f -executable -exec rm {} +
